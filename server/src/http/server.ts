@@ -1,4 +1,5 @@
 import fastify from 'fastify'
+import 'dotenv/config' // Carrega variáveis de ambiente do arquivo .env
 
 const app = fastify()
 
