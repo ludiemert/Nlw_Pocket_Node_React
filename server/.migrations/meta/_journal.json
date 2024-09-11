@@ -8,6 +8,13 @@
       "when": 1726091348843,
       "tag": "0000_loose_sphinx",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1726093521082,
+      "tag": "0001_charming_elektra",
+      "breakpoints": true
     }
   ]
 }
