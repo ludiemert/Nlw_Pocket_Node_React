@@ -10,6 +10,19 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "node16"
+    "moduleResolution": "node16",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/@types" // Ajustado para incluir tipos personalizados se estiver usando essa pasta
+    ],
+    //  "module": "node16",
+    //  "target": "es2022",
+    //   "strict": true,
+    //    "esModuleInterop": true,
+    //   "skipLibCheck": true,
+    //    "moduleResolution": "node16"
+    "types": [
+      "node"
+    ] // Inclui os tipos do Node.js automaticamente
   }
 }
