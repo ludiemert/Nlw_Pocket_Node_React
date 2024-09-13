@@ -7,12 +7,21 @@ import {
 //import 'dotenv/config' // Carrega variáveis de ambiente do arquivo .env
 import z from "zod";
 import { createGoal } from "../functions/create-goal";
+import { getWeekPendingGoals } from "../functions/get-week-pending-goals";
+import { sql } from "drizzle-orm";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
 // Add schema validator and serializer
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
+
+//route
+app.get("/pending-goals", async () => {
+	const sql = await getWeekPendingGoals();
+
+	return sql.sql;
+});
 
 app.post(
 	"/goals",
