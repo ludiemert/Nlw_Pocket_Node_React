@@ -1,23 +1,38 @@
 import fastify from "fastify";
+import {
+	serializerCompiler,
+	validatorCompiler,
+	type ZodTypeProvider,
+} from "fastify-type-provider-zod";
 //import 'dotenv/config' // Carrega variáveis de ambiente do arquivo .env
 import z from "zod";
 import { createGoal } from "../functions/create-goal";
 
-const app = fastify();
+const app = fastify().withTypeProvider<ZodTypeProvider>();
 
-app.post("/goals", async (request) => {
-	const createGoalSchema = z.object({
-		title: z.string(),
-		desiredWeeklyFrenquency: z.number().int().min(1).max(7),
-	});
+// Add schema validator and serializer
+app.setValidatorCompiler(validatorCompiler);
+app.setSerializerCompiler(serializerCompiler);
 
-	const body = createGoalSchema.parse(request.body);
+app.post(
+	"/goals",
+	{
+		schema: {
+			body: z.object({
+				title: z.string(),
+				desiredWeeklyFrenquency: z.number().int().min(1).max(7),
+			}),
+		},
+	},
+	async (request) => {
+		const { title, desiredWeeklyFrenquency } = request.body;
 
-	await createGoal({
-		title: body.title,
-		desiredWeeklyFrenquency: body.desiredWeeklyFrenquency,
-	});
-});
+		await createGoal({
+			title,
+			desiredWeeklyFrenquency,
+		});
+	},
+);
 
 app
 	.listen({
