@@ -29,16 +29,16 @@ app.post(
 		schema: {
 			body: z.object({
 				title: z.string(),
-				desiredWeeklyFrenquency: z.number().int().min(1).max(7),
+				desiredWeeklyFrequency: z.number().int().min(1).max(7),
 			}),
 		},
 	},
 	async (request) => {
-		const { title, desiredWeeklyFrenquency } = request.body;
+		const { title, desiredWeeklyFrequency } = request.body;
 
 		await createGoal({
 			title,
-			desiredWeeklyFrenquency,
+			desiredWeeklyFrequency,
 		});
 	},
 );
