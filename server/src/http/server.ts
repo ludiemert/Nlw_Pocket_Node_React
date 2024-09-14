@@ -16,11 +16,16 @@ const app = fastify().withTypeProvider<ZodTypeProvider>();
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 
+//route test
+//app.get("/pending-goals", async () => {
+//	const sql = await getWeekPendingGoals();
+//return sql;
+//});
+
 //route
 app.get("/pending-goals", async () => {
-	const sql = await getWeekPendingGoals();
-
-	return sql;
+	const { pendingGoals } = await getWeekPendingGoals();
+	return { pendingGoals };
 });
 
 app.post(

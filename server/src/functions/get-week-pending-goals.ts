@@ -41,20 +41,24 @@ export async function getWeekPendingGoals() {
 	);
 
 	// Fazendo a junção das tabelas
-	const sql = await db
+	const pendingGoals = await db
 		.with(goalsCreatedUpToWeek, goalCompletionCounts)
 		.select({
 			id: goalsCreatedUpToWeek.id,
 			title: goalsCreatedUpToWeek.title,
 			desiredWeeklyFrequency: goalsCreatedUpToWeek.desiredWeeklyFrequency,
 			createdAt: goalsCreatedUpToWeek.createdAt,
-			completionCount: goalCompletionCounts.completionCount,
+
+			completionCount: sql /*sql*/` 
+		   COALESCE(${goalCompletionCounts.completionCount}, 0)
+		`.mapWith(Number),
 		})
+
 		.from(goalsCreatedUpToWeek)
 		.leftJoin(
 			goalCompletionCounts,
 			eq(goalCompletionCounts.goalId, goalsCreatedUpToWeek.id),
 		);
 
-	return sql;
+	return { pendingGoals };
 }
