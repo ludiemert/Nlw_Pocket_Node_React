@@ -17,38 +17,7 @@ const app = fastify().withTypeProvider<ZodTypeProvider>();
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 
-//route GET test sql
-//app.get("/pending-goals", async () => {
-//const sql = await getWeekPendingGoals();
-//return sql;
-//});
-
-//route GET
-app.get("/pending-goals", async () => {
-	const { pendingGoals } = await getWeekPendingGoals();
-	return { pendingGoals };
-});
-
-//rout POST
-app.post(
-	"/completion",
-	{
-		schema: {
-			body: z.object({
-				goalId: z.string(),
-			}),
-		},
-	},
-	async (request) => {
-		const { goalId } = request.body;
-
-		await CreateGoalCompletion({
-			goalId,
-		});
-	},
-);
-
-//route POST
+//route POST /goals
 app.post(
 	"/goals",
 	{
@@ -65,6 +34,37 @@ app.post(
 		await createGoal({
 			title,
 			desiredWeeklyFrequency,
+		});
+	},
+);
+
+//route GET test sql - /pending-goals
+//app.get("/pending-goals", async () => {
+//const sql = await getWeekPendingGoals();
+//return sql;
+//});
+
+//route GET /pending-goals
+app.get("/pending-goals", async () => {
+	const { pendingGoals } = await getWeekPendingGoals();
+	return { pendingGoals };
+});
+
+//rout POST /completions
+app.post(
+	"/completions",
+	{
+		schema: {
+			body: z.object({
+				goalId: z.string(),
+			}),
+		},
+	},
+	async (request) => {
+		const { goalId } = request.body;
+
+		await CreateGoalCompletion({
+			goalId,
 		});
 	},
 );
