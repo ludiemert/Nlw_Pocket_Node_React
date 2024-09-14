@@ -1,6 +1,6 @@
 import { lte, and, count, sql as drizzleSql, gte, eq, sql } from "drizzle-orm";
 import { db } from "../db";
-import { goalCompletions } from "../db/schema";
+import { goalCompletions, goals } from "../db/schema";
 import dayjs from "dayjs";
 
 interface CreateGoalCompletionRequest {
@@ -29,14 +29,22 @@ export async function CreateGoalCompletion({
 			.groupBy(goalCompletions.goalId),
 	);
 
+	// Fazendo a junção das tabelas
 	const result = await db
-		.insert(goalCompletions)
-		.values({ goalId })
-		.returning();
+		.with(goalCompletionCounts)
+		.select({
+			desiredWeeklyFrequency: goals.desiredWeeklyFrequency,
+			completionCount: sql /*sql*/` 
+		   COALESCE(${goalCompletionCounts.completionCount}, 0)
+		`.mapWith(Number),
+		})
+		.from(goals)
+		.leftJoin(goalCompletionCounts, eq(goalCompletionCounts.goalId, goals.id));
 
-	const goalCompletion = result[0];
+	//const result = await db.insert(goalCompletions).values({ goalId }).returning()
+	//const goalCompletion = result[0];
 
 	return {
-		goalCompletion,
+		result,
 	};
 }
