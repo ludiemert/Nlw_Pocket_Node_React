@@ -9,8 +9,8 @@ import z from "zod";
 import { createGoal } from "../functions/create-goal";
 import { getWeekPendingGoals } from "../functions/get-week-pending-goals";
 import { sql } from "drizzle-orm";
-import { CreateGoalCompletion } from "../functions/create-goal-completion";
 import { createGoalRoute } from "./routes/create-goal";
+import { createCompletionRoute } from "./routes/create-completion";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -20,6 +20,7 @@ app.setSerializerCompiler(serializerCompiler);
 
 //register route create
 app.register(createGoalRoute);
+app.register(createCompletionRoute);
 
 //route GET test sql - /pending-goals
 //app.get("/pending-goals", async () => {
@@ -33,25 +34,6 @@ app.get("/pending-goals", async () => {
 	return { pendingGoals };
 	//	return pendingGoals.sql;
 });
-
-//rout POST /completions
-app.post(
-	"/completions",
-	{
-		schema: {
-			body: z.object({
-				goalId: z.string(),
-			}),
-		},
-	},
-	async (request) => {
-		const { goalId } = request.body;
-
-		await CreateGoalCompletion({
-			goalId,
-		});
-	},
-);
 
 app
 	.listen({
