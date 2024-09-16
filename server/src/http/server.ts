@@ -5,9 +5,11 @@ import {
 	type ZodTypeProvider,
 } from "fastify-type-provider-zod";
 //import 'dotenv/config' // Carrega variáveis de ambiente do arquivo .env
+
 import { createGoalRoute } from "./routes/create-goal";
 import { createCompletionRoute } from "./routes/create-completion";
-import { getPendingGoalsRoute } from "./get-pending-goals";
+import { getPendingGoalsRoute } from "./routes/get-pending-goals";
+import { getWeekSummary } from "../functions/get-week-summary";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -19,6 +21,7 @@ app.setSerializerCompiler(serializerCompiler);
 app.register(createGoalRoute);
 app.register(createCompletionRoute);
 app.register(getPendingGoalsRoute);
+app.register(getWeekSummary);
 
 app
 	.listen({
