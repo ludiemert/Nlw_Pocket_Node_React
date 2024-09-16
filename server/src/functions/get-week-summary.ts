@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { db } from "../db";
 import { goalCompletions, goals } from "../db/schema";
-import { and, count, eq, gte, lte, sql } from "drizzle-orm";
+import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
 
 //details my week
 export async function getWeekSummary() {
@@ -22,10 +22,11 @@ export async function getWeekSummary() {
 	);
 
 	//verificar as metas ja completei MAIS buscar metas completadas mas separar elas por dia
-	const goalsCompletedInWeek = db.$with("goal_completed_in_week").as(
+	//metas completas
+	const goalsCompletedInWeek = db.$with("goals_completed_in_week").as(
 		db
 			.select({
-				id: goals.id,
+				id: goalCompletions.id,
 				title: goals.title,
 				completedAt: goalCompletions.createdAt,
 				completedAtDate: sql /*sql*/`
@@ -39,10 +40,62 @@ export async function getWeekSummary() {
 					gte(goalCompletions.createdAt, firstDayOfWeek),
 					lte(goalCompletions.createdAt, lastDayOfWeek),
 				),
-			),
+			)
+			.orderBy(desc(goalCompletions.createdAt)),
 	);
 
+	//dados agrupados por datas
+	const goalsCompletedByWeekDay = db.$with("goals_completed_by_week_day").as(
+		db
+			.select({
+				completedAtDate: goalsCompletedInWeek.completedAtDate,
+				completions: sql /*sql*/`
+        JSON_AGG(
+          JSON_BUILD_OBJECT(
+            'id', ${goalsCompletedInWeek.id},
+            'title', ${goalsCompletedInWeek.title},
+            'completedAt', ${goalsCompletedInWeek.completedAt} 
+          )
+        )
+        `.as("completions"),
+			})
+			.from(goalsCompletedInWeek)
+			.groupBy(goalsCompletedInWeek.completedAtDate)
+			.orderBy(desc(goalsCompletedInWeek.completedAtDate)),
+	);
+
+	type GoalsPerDay = Record<
+		string,
+		{
+			id: string;
+			title: string;
+			completedAt: string;
+		}[]
+	>;
+
+	//verificar o resultado
+	const result = await db
+		.with(goalsCreatedUpToWeek, goalsCompletedInWeek, goalsCompletedByWeekDay)
+		.select({
+			completed:
+				sql /*sql*/`(SELECT COUNT(*) FROM ${goalsCompletedInWeek})`.mapWith(
+					Number,
+				),
+			total:
+				sql /*sql*/`(SELECT SUM(${goalsCreatedUpToWeek.desiredWeeklyFrequency}) FROM ${goalsCreatedUpToWeek})`.mapWith(
+					Number,
+				),
+			//metas por dia  =  JSON_BUILD_OBJECT() (cria um objeto)
+			goalsPerDay: sql /*sql*/`
+        JSON_OBJECT_AGG(
+          ${goalsCompletedByWeekDay.completedAtDate},
+          ${goalsCompletedByWeekDay.completions}
+        )
+        `,
+		})
+		.from(goalsCompletedByWeekDay);
+
 	return {
-		summary: "test",
+		summary: result[0],
 	};
 }
