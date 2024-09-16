@@ -10,8 +10,14 @@ import { createGoalRoute } from "./routes/create-goal";
 import { createCompletionRoute } from "./routes/create-completion";
 import { getPendingGoalsRoute } from "./routes/get-pending-goals";
 import { getWeekSummaryRoute } from "./routes/get-week-summary";
+import fastifyCors from "@fastify/cors";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
+
+//config fastifyCors
+app.register(fastifyCors, {
+	origin: "*", //em producao colocar a URL do frontEnd
+});
 
 // Add schema validator and serializer
 app.setValidatorCompiler(validatorCompiler);
