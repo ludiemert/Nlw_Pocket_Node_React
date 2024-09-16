@@ -12,6 +12,7 @@ export async function getWeekPendingGoals() {
 
 	console.log(lastDayOfWeek.toISOString());
 
+	//busca todas  as metas daquela semana (durante ou antes da semana)
 	const goalsCreatedUpToWeek = db.$with("goals_created_up_to_week").as(
 		db
 			.select({
@@ -24,6 +25,7 @@ export async function getWeekPendingGoals() {
 			.where(lte(goals.createdAt, lastDayOfWeek)),
 	);
 
+	//verificar quantas metas ja completei
 	const goalCompletionCounts = db.$with("goal_completion_counts").as(
 		db
 			.select({
