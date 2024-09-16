@@ -10,6 +10,7 @@ import { createGoal } from "../functions/create-goal";
 import { getWeekPendingGoals } from "../functions/get-week-pending-goals";
 import { sql } from "drizzle-orm";
 import { CreateGoalCompletion } from "../functions/create-goal-completion";
+import { createGoalRoute } from "./routes/create-goal";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>();
 
@@ -17,26 +18,8 @@ const app = fastify().withTypeProvider<ZodTypeProvider>();
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 
-//route POST /goals
-app.post(
-	"/goals",
-	{
-		schema: {
-			body: z.object({
-				title: z.string(),
-				desiredWeeklyFrequency: z.number().int().min(1).max(7),
-			}),
-		},
-	},
-	async (request) => {
-		const { title, desiredWeeklyFrequency } = request.body;
-
-		await createGoal({
-			title,
-			desiredWeeklyFrequency,
-		});
-	},
-);
+//register route create
+app.register(createGoalRoute);
 
 //route GET test sql - /pending-goals
 //app.get("/pending-goals", async () => {
@@ -48,6 +31,7 @@ app.post(
 app.get("/pending-goals", async () => {
 	const { pendingGoals } = await getWeekPendingGoals();
 	return { pendingGoals };
+	//	return pendingGoals.sql;
 });
 
 //rout POST /completions
