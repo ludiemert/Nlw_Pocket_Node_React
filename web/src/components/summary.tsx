@@ -4,6 +4,7 @@ import { Button } from './ui/button'
 import { InOrbitIcon } from './in-orbit-icon'
 import { Progress, ProgressIndicator } from './ui/progress-bar'
 import { Separator } from './ui/separator'
+import { OutlineButton } from './ui/outline-button'
 
 export function Summary() {
   return (
@@ -37,6 +38,28 @@ export function Summary() {
       </div>
 
       <Separator />
+
+      <div className="flex flex-wrap gap-3">
+        <OutlineButton>
+          <Plus className=" size-4 text-zinc-600" />
+          Meditate
+        </OutlineButton>
+
+        <OutlineButton>
+          <Plus className=" size-4 text-zinc-600" />
+          Exercise
+        </OutlineButton>
+
+        <OutlineButton>
+          <Plus className=" size-4 text-zinc-600" />
+          Wake up early
+        </OutlineButton>
+
+        <OutlineButton>
+          <Plus className=" size-4 text-zinc-600" />
+          eating well
+        </OutlineButton>
+      </div>
     </div>
   )
 }
