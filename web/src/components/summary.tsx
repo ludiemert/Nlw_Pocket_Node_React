@@ -1,4 +1,4 @@
-import { Plus } from 'lucide-react'
+import { CheckCircle2, Plus } from 'lucide-react'
 import { DialogTrigger } from './ui/dialog'
 import { Button } from './ui/button'
 import { InOrbitIcon } from './in-orbit-icon'
@@ -59,6 +59,126 @@ export function Summary() {
           <Plus className=" size-4 text-zinc-600" />
           eating well
         </OutlineButton>
+      </div>
+
+      <div className="flex flex-col gap-6">
+        <h2 className="text-xl font-medium">Your week</h2>
+
+        <div className="flex flex-col gap-4">
+          <h3 className=" font-medium">
+            Sunday
+            <span className="text-zinc-400 text-xs">(August 10th)</span>
+          </h3>
+
+          <ul className="flex flex-col gap-3">
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className=" size-4 text-pink-500 " />
+              <span className="text-sm text-zinc-400">
+                {' '}
+                "You completed 🤗😎😎🤩"
+                <span className="text-zinc-100">Wake up early</span> " the{' '}
+                <span className="text-zinc-100">08:13h</span>
+              </span>
+            </li>
+
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className=" size-4 text-pink-500 " />
+              <span className="text-sm text-zinc-400">
+                {' '}
+                "You completed 🤗😎😎🤩"
+                <span className="text-zinc-100">Wake up early</span> " the{' '}
+                <span className="text-zinc-100">08:13h</span>
+              </span>
+            </li>
+
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className=" size-4 text-pink-500 " />
+              <span className="text-sm text-zinc-400">
+                {' '}
+                "You completed 🤗😎😎🤩"
+                <span className="text-zinc-100">Wake up early</span> " the{' '}
+                <span className="text-zinc-100">08:13h</span>
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className=" font-medium">
+            Monday
+            <span className="text-zinc-400 text-xs">(August 11th)</span>
+          </h3>
+
+          <ul className="flex flex-col gap-3">
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className=" size-4 text-pink-500 " />
+              <span className="text-sm text-zinc-400">
+                {' '}
+                "You completed 🤗😎😎🤩"
+                <span className="text-zinc-100">Wake up early</span> " the{' '}
+                <span className="text-zinc-100">08:13h</span>
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className=" font-medium">
+            Tuesday
+            <span className="text-zinc-400 text-xs">(August 12th)</span>
+          </h3>
+
+          <ul className="flex flex-col gap-3">
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className=" size-4 text-pink-500 " />
+              <span className="text-sm text-zinc-400">
+                {' '}
+                "You completed 🤗😎😎🤩"
+                <span className="text-zinc-100">Wake up early</span> " the{' '}
+                <span className="text-zinc-100">08:13h</span>
+              </span>
+            </li>
+
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className=" size-4 text-pink-500 " />
+              <span className="text-sm text-zinc-400">
+                {' '}
+                "You completed 🤗😎😎🤩"
+                <span className="text-zinc-100">Wake up early</span> " the{' '}
+                <span className="text-zinc-100">08:13h</span>
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <h3 className=" font-medium">
+            Wednesday
+            <span className="text-zinc-400 text-xs">(August 13th)</span>
+          </h3>
+
+          <ul className="flex flex-col gap-3">
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className=" size-4 text-pink-500 " />
+              <span className="text-sm text-zinc-400">
+                {' '}
+                "You completed 🤗😎😎🤩"
+                <span className="text-zinc-100">Wake up early</span> " the{' '}
+                <span className="text-zinc-100">08:13h</span>
+              </span>
+            </li>
+
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className=" size-4 text-pink-500 " />
+              <span className="text-sm text-zinc-400">
+                {' '}
+                "You completed 🤗😎😎🤩"
+                <span className="text-zinc-100">Wake up early</span> " the{' '}
+                <span className="text-zinc-100">08:13h</span>
+              </span>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   )
