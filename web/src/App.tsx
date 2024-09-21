@@ -10,6 +10,7 @@ export function App() {
   const { data } = useQuery({
     queryKey: ['summary'],
     queryFn: getSummary,
+    staleTime: 1000 * 60, // 1000 = 1 segund / 60 seconds = atualizacao
   })
 
   return (
