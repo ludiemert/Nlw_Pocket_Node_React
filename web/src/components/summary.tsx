@@ -18,9 +18,14 @@ export function Summary() {
     queryFn: getSummary,
     staleTime: 1000 * 60, // 1000 = 1 segund / 60 seconds = atualizacao
   })
+  if (!data) return null
 
+  //variable days of the week for proj
   const firstDayOfWeek = dayjs().startOf('week').format('D MMM')
-  const lastDayOfWeek = dayjs().endOf('week').format('D MMM')
+  const lastDayOfWeek = dayjs().endOf('week').format('D MMM YYYY')
+
+  //progress bar variable
+  const completedPercentage = Math.round((data.completed * 100) / data.total)
 
   return (
     <div className="py-10 max-w-[480px] px-5 mx-auto flex flex-col gap-6">
@@ -42,15 +47,17 @@ export function Summary() {
 
       <div className=" flex flex-col gap-3">
         <Progress value={8} max={15}>
-          <ProgressIndicator style={{ width: '50%' }} />
+          <ProgressIndicator style={{ width: `${completedPercentage}%` }} />
         </Progress>
 
         <div className="flex items-center justify-between text-xs text-zinc-400">
           <span>
-            You completed <span className="text-zinc-100">8</span> out of{' '}
-            <span className="text-zinc-100">15</span> goals this week.
+            You completed{' '}
+            <span className="text-zinc-100">{data?.completed}</span> out of{' '}
+            <span className="text-zinc-100">{data?.total}</span> goals this
+            week.
           </span>
-          <span>58%</span>
+          <span>{completedPercentage}%</span>
         </div>
       </div>
 
