@@ -7,6 +7,10 @@ import { Separator } from './ui/separator'
 import { OutlineButton } from './ui/outline-button'
 import { useQuery } from '@tanstack/react-query'
 import { getSummary } from '../http - requisitions/get-summary'
+import dayjs from 'dayjs'
+
+//se quiser dayjs em Port => import BR from 'dayjs/locale/pr-BR'
+//dayjs.locale(ptBR)
 
 export function Summary() {
   const { data } = useQuery({
@@ -15,12 +19,17 @@ export function Summary() {
     staleTime: 1000 * 60, // 1000 = 1 segund / 60 seconds = atualizacao
   })
 
+  const firstDayOfWeek = dayjs().startOf('week').format('D MMM')
+  const lastDayOfWeek = dayjs().endOf('week').format('D MMM')
+
   return (
     <div className="py-10 max-w-[480px] px-5 mx-auto flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div className=" flex items-center gap-3">
           <InOrbitIcon />
-          <span className="text-lg font-semibold">August 5th to 12th</span>
+          <span className="text-lg font-semibold capitalize">
+            {firstDayOfWeek} - {lastDayOfWeek}
+          </span>
         </div>
 
         <DialogTrigger asChild>
