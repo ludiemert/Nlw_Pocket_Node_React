@@ -2,40 +2,30 @@ import { Dialog } from './components/ui/dialog'
 
 import { CreateGoal } from './components/create-goal'
 //import { Summary } from './components/summary'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Summary } from './components/summary'
+import { EmptyGoals } from './components/empty-goals'
 
 //import { EmptyGoals } from './components/empty-goals'
 
-//let count = 5
-
 export function App() {
-  const [count, setCount] = useState(5)
   const [summary, setSumary] = useState(null)
 
-  function increment() {
-    setCount(count + 1)
-  }
-
-  fetch('http://localhost:3333/summary')
-    .then(response => {
-      return response.json()
-    })
-    .then(data => {
-      setSumary(data)
-    })
+  useEffect(() => {
+    fetch('http://localhost:3333/summary')
+      .then(response => {
+        return response.json()
+      })
+      .then(data => {
+        setSumary(data.summary)
+      })
+  }, [])
 
   return (
     <Dialog>
-      {/* <EmptyGoals /> */}
-      <button type="button" onClick={increment}>
-        Incrementar
-      </button>
+      {/* IF no REACT */}
+      {summary?.total > 0 ? <Summary /> : <EmptyGoals />}
 
-      <h1 className="text-4xl">{count}</h1>
-
-      <pre>{JSON.stringify(summary, null, 2)}</pre>
-
-      {/*   <Summary /> */}
       <CreateGoal />
     </Dialog>
   )
