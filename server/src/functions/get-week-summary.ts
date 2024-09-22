@@ -6,9 +6,9 @@ import { and, desc, eq, gte, lte, sql } from 'drizzle-orm'
 //details my week
 export async function getWeekSummary() {
   const firstDayOfWeek = dayjs().startOf('week').toDate() //primeiro dia da semana
-  const lastDayOfWeek = dayjs().endOf('week').toDate() //ultimo dia da semana
+  const lastDayOfWeek = dayjs().endOf('week').toDate() //último dia da semana
 
-  //busca todas  as metas daquela semana (durante ou antes da semana)
+  // Busca todas as metas daquela semana (durante ou antes da semana)
   const goalsCreatedUpToWeek = db.$with('goals_created_up_to_week').as(
     db
       .select({
@@ -21,8 +21,7 @@ export async function getWeekSummary() {
       .where(lte(goals.createdAt, lastDayOfWeek))
   )
 
-  //verificar as metas ja completei MAIS buscar metas completadas mas separar elas por dia
-  //metas completas
+  // Verificar as metas já completadas e separar por dia
   const goalsCompletedInWeek = db.$with('goals_completed_in_week').as(
     db
       .select({
@@ -41,10 +40,10 @@ export async function getWeekSummary() {
           lte(goalCompletions.createdAt, lastDayOfWeek)
         )
       )
-      .orderBy(desc(goalCompletions.createdAt))
+    //    .orderBy(desc(goalCompletions.createdAt))
   )
 
-  //dados agrupados por datas
+  // Dados agrupados por datas
   const goalsCompletedByWeekDay = db.$with('goals_completed_by_week_day').as(
     db
       .select({
@@ -61,6 +60,7 @@ export async function getWeekSummary() {
       })
       .from(goalsCompletedInWeek)
       .groupBy(goalsCompletedInWeek.completedAtDate)
+      //   .orderBy(desc(goalsCompletedInWeek.completedAtDate))
       .orderBy(desc(goalsCompletedInWeek.completedAtDate))
   )
 
@@ -73,7 +73,7 @@ export async function getWeekSummary() {
     }[]
   >
 
-  //verificar o resultado
+  // Verificar o resultado
   const result = await db
     .with(goalsCreatedUpToWeek, goalsCompletedInWeek, goalsCompletedByWeekDay)
     .select({
@@ -86,8 +86,8 @@ export async function getWeekSummary() {
           Number
         ),
 
-      //metas por dia  =  JSON_BUILD_OBJECT() (cria um objeto)
-      goalsPerDay: sql /*sql*/<GoalsPerDay>`
+      // Metas por dia
+      goalsPerDay: sql /*sql*/<GoalsPerDay>` 
         JSON_OBJECT_AGG(
           ${goalsCompletedByWeekDay.completedAtDate},
           ${goalsCompletedByWeekDay.completions}
