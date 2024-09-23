@@ -12,6 +12,7 @@ async function seed() {
       { title: 'Wake up early', desiredWeeklyFrequency: 5 },
       { title: 'Exercise', desiredWeeklyFrequency: 3 },
       { title: 'Meditate', desiredWeeklyFrequency: 1 },
+      { title: 'Swimming', desiredWeeklyFrequency: 2 },
     ])
     .returning()
 
