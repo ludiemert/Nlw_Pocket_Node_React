@@ -16,6 +16,8 @@ import { X } from 'lucide-react'
 import { z } from 'zod'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { createGoal } from '../http_requisitions/create-goal'
+import { useQueryClient } from '@tanstack/react-query'
 
 const createGoalForm = z.object({
   title: z.string().min(1, 'Enter the activity you want to do 😎😎😎 '),
@@ -25,13 +27,22 @@ const createGoalForm = z.object({
 type CreateGoalForm = z.infer<typeof createGoalForm>
 
 export function CreateGoal() {
+  const queryClient = useQueryClient()
+
   const { register, control, handleSubmit, formState } =
     useForm<CreateGoalForm>({
       resolver: zodResolver(createGoalForm),
     })
 
-  function handleCreateGoal(data: CreateGoalForm) {
-    console.log(data)
+  async function handleCreateGoal(data: CreateGoalForm) {
+    await createGoal({
+      title: data.title,
+      desiredWeeklyFrequency: data.desiredWeeklyFrequency,
+    })
+
+    //atualizar o front metas (goals) automatic
+    queryClient.invalidateQueries({ queryKey: ['summary'] })
+    queryClient.invalidateQueries({ queryKey: ['pending-goals'] })
   }
 
   return (
