@@ -2,7 +2,9 @@
   "name": "server",
   "version": "1.0.0",
   "main": "index.js",
+  "node": "20.x",
   "scripts": {
+    "start": "node /db/index.js",
     "dev": "tsx watch --env-file .env src/http/server.ts",
     "seed": "tsx --env-file .env src/db/seed.ts"
   },
