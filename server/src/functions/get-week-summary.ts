@@ -40,7 +40,7 @@ export async function getWeekSummary() {
           lte(goalCompletions.createdAt, lastDayOfWeek)
         )
       )
-    //    .orderBy(desc(goalCompletions.createdAt))
+      .orderBy(desc(goalCompletions.createdAt))
   )
 
   // Dados agrupados por datas
